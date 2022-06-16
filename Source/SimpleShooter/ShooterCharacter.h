@@ -45,5 +45,7 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
+
+	void Shoot();
 };
 
