@@ -28,6 +28,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintPure)
+	bool IsDeadFunc() const;
+	
+	UFUNCTION(BlueprintCallable)
+	void SetIsChasing(bool IsItChasing);
+
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
+
 private:
 	void MoveForward(float AxisValue);
 
@@ -43,9 +54,24 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere)
+	float Health = 1.f;
+
 	UPROPERTY()
 	AGun* Gun;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class USceneComponent* PatrolLocationSceneComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool IsChasing = false;
+
+public:
 	void Shoot();
+
+	FVector GetPatrolLocation();
 };
 
